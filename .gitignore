@@ -1,0 +1,9 @@
+.classpath
+.project
+.gradle
+.settings
+bin
+build
+1.15.2.tsrg
+merged.tiny
+yarn-1.15.2+build.15-v2.tiny

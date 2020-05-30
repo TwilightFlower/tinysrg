@@ -1,0 +1,41 @@
+plugins {
+	id 'java'
+	id 'eclipse'
+	id 'maven-publish'
+}
+
+repositories {
+	jcenter()
+	maven {
+		name = "Fabric"
+		url = 'https://maven.fabricmc.net/'
+	}
+}
+
+group = "io.github.nuclearfarts"
+version = "0.1.0"
+archivesBaseName = "tinysrg"
+
+dependencies {
+	implementation 'net.fabricmc:tiny-mappings-parser:0.2.2.14'
+	runtime 'com.google.guava:guava:28.0-jre' // fix your pom fabric
+}
+
+task sourcesJar(type: Jar) {
+	from sourceSets.main.allJava
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			groupId project.group
+			artifactId project.archivesBaseName
+			version project.version
+
+			artifact (jar)
+			artifact (sourcesJar) {
+				classifier 'sources'
+			}
+		}
+	}
+}
