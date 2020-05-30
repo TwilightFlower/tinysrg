@@ -21,10 +21,6 @@ dependencies {
 	runtime 'com.google.guava:guava:28.0-jre' // fix your pom fabric
 }
 
-task sourcesJar(type: Jar) {
-	from sourceSets.main.allJava
-}
-
 publishing {
 	publications {
 		maven(MavenPublication) {
@@ -33,9 +29,6 @@ publishing {
 			version project.version
 
 			artifact (jar)
-			artifact (sourcesJar) {
-				classifier 'sources'
-			}
 		}
 	}
 }
