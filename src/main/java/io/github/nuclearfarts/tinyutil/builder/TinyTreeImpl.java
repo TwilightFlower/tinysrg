@@ -1,12 +1,13 @@
 package io.github.nuclearfarts.tinyutil.builder;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.ToIntFunction;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.google.common.collect.ImmutableMap;
 
 import net.fabricmc.mapping.reader.v2.TinyMetadata;
 import net.fabricmc.mapping.tree.ClassDef;
@@ -19,7 +20,7 @@ class TinyTreeImpl implements TinyTree {
 	private final Collection<ClassDef> classes;
 	private final Map<String, String> properties;
 	private final TinyMetadata meta;
-	private final Map<String, ClassDef> defaultMap = new HashMap<>();
+	private final Map<String, ClassDef> defaultMap;
 	
 	public TinyTreeImpl(List<String> namespaces, MethodRefHolder refs, Collection<ClassDef> classes, Map<String, String> properties, int majorVersion, int minorVersion) {
 		this.classes = classes;
@@ -27,9 +28,11 @@ class TinyTreeImpl implements TinyTree {
 		this.properties = properties;
 		meta = new TinyMetadataImpl(majorVersion, minorVersion);
 		String defaultNs = namespaces.get(0);
+		ImmutableMap.Builder<String, ClassDef> builder = ImmutableMap.builder();
 		for(ClassDef c : classes) {
-			defaultMap.put(c.getRawName(defaultNs), c);
+			builder.put(c.getRawName(defaultNs), c);
 		}
+		defaultMap = builder.build();
 		refs.fieldDescMapper = this::mapFieldDesc;
 		refs.methodDescMapper = this::mapMethodDesc;
 		refs.namespaceIndexer = meta::index;

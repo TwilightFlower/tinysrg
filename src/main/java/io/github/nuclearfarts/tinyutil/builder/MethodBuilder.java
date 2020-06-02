@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
 
+import com.google.common.collect.ImmutableList;
+
 import net.fabricmc.mapping.tree.LocalVariableDef;
 import net.fabricmc.mapping.tree.MethodDef;
 import net.fabricmc.mapping.tree.ParameterDef;
@@ -38,15 +40,7 @@ public class MethodBuilder extends DescriptoredBuilder<MethodBuilder, MethodDef>
 
 	@Override
 	MethodDef build() {
-		Collection<LocalVariableDef> lCopy = new LinkedList<>();
-		Collection<ParameterDef> pCopy = new LinkedList<>();
-		for(LocalVariableDef l : locals) {
-			lCopy.add(l);
-		}
-		for(ParameterDef p : params) {
-			pCopy.add(p);
-		}
-		return new MethodDefImpl(getNamesArray(), namespaceIndexer, comment, descriptor, descMapper, lCopy, pCopy);
+		return new MethodDefImpl(getNamesArray(), namespaceIndexer, comment, descriptor, descMapper, ImmutableList.copyOf(locals), ImmutableList.copyOf(params));
 	}
 
 }

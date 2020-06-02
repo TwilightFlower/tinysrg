@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
 
+import com.google.common.collect.ImmutableList;
+
 import net.fabricmc.mapping.tree.ClassDef;
 import net.fabricmc.mapping.tree.FieldDef;
 import net.fabricmc.mapping.tree.MethodDef;
@@ -41,14 +43,6 @@ public class ClassBuilder extends MappedBuilder<ClassBuilder, ClassDef> {
 	
 	@Override
 	ClassDef build() {
-		Collection<FieldDef> fCopy = new LinkedList<>();
-		Collection<MethodDef> mCopy = new LinkedList<>();
-		for(MethodDef m : methods) {
-			mCopy.add(m);
-		}
-		for(FieldDef f : fields) {
-			fCopy.add(f);
-		}
-		return new ClassDefImpl(getNamesArray(), namespaceIndexer, comment, fCopy, mCopy);
+		return new ClassDefImpl(getNamesArray(), namespaceIndexer, comment, ImmutableList.copyOf(fields), ImmutableList.copyOf(methods));
 	}
 }

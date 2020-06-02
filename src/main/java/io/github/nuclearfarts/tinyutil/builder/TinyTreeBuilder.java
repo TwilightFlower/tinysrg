@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.ToIntFunction;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableMap;
+
 import net.fabricmc.mapping.tree.ClassDef;
 import net.fabricmc.mapping.tree.TinyTree;
 
@@ -69,7 +72,7 @@ public class TinyTreeBuilder {
 	}
 	
 	public TinyTree build() {
-		return new TinyTreeImpl(namespaces, refHolder, classes, properties, majorVersion, minorVersion);
+		return new TinyTreeImpl(ImmutableList.copyOf(namespaces), refHolder, ImmutableList.copyOf(classes), ImmutableMap.copyOf(properties), majorVersion, minorVersion);
 	}
 	
 	private void finalizeNamespaces() {
