@@ -1,4 +1,4 @@
-package io.github.nuclearfarts.tinysrg.builder;
+package io.github.nuclearfarts.tinyutil.builder;
 
 import java.util.HashMap;
 import java.util.Map;

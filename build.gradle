@@ -14,11 +14,11 @@ repositories {
 
 group = "io.github.nuclearfarts"
 version = "0.1.0"
-archivesBaseName = "tinysrg"
+archivesBaseName = "tinyutil"
 
 dependencies {
-	implementation 'net.fabricmc:tiny-mappings-parser:0.2.2.14'
-	runtime 'com.google.guava:guava:28.0-jre' // fix your pom fabric
+	implementation 'net.fabricmc:tiny-mappings-parser:0.3.0+build.17'
+	//runtime 'com.google.guava:guava:28.0-jre' // fix your pom fabric
 }
 
 publishing {

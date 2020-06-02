@@ -1,4 +1,4 @@
-package io.github.nuclearfarts.tinysrg.util;
+package io.github.nuclearfarts.tinyutil.util;
 
 
 public class Triple<T, U, V> {

@@ -1,4 +1,4 @@
-package io.github.nuclearfarts.tinysrg;
+package io.github.nuclearfarts.tinyutil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,9 +16,9 @@ import net.fabricmc.mapping.tree.ParameterDef;
 import net.fabricmc.mapping.tree.TinyMappingFactory;
 import net.fabricmc.mapping.tree.TinyTree;
 
-import io.github.nuclearfarts.tinysrg.builder.TinyTreeBuilder;
-import io.github.nuclearfarts.tinysrg.util.Pair;
-import io.github.nuclearfarts.tinysrg.util.Triple;
+import io.github.nuclearfarts.tinyutil.builder.TinyTreeBuilder;
+import io.github.nuclearfarts.tinyutil.util.Pair;
+import io.github.nuclearfarts.tinyutil.util.Triple;
 
 public class TinySrg {
 	
@@ -32,6 +32,10 @@ public class TinySrg {
 		try(OutputStream out = Files.newOutputStream(Paths.get(args[2]), StandardOpenOption.CREATE)) {
 			TinyV2Writer.write(tinySrg, out);
 		}
+	}
+	
+	public static void checkForDupMappings(TinyTree tree) {
+		
 	}
 
 	public static TinyTree addSrg(TinyTree tiny, TsrgMappings tsrg) {

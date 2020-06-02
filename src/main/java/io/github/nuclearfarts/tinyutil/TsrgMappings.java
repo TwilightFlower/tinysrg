@@ -1,4 +1,4 @@
-package io.github.nuclearfarts.tinysrg;
+package io.github.nuclearfarts.tinyutil;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import io.github.nuclearfarts.tinysrg.util.Pair;
-import io.github.nuclearfarts.tinysrg.util.Triple;
+import io.github.nuclearfarts.tinyutil.util.Pair;
+import io.github.nuclearfarts.tinyutil.util.Triple;
 
 public class TsrgMappings {
 

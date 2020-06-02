@@ -1,4 +1,4 @@
-package io.github.nuclearfarts.tinysrg;
+package io.github.nuclearfarts.tinyutil;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
