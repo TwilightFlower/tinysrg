@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.List;
@@ -27,18 +28,27 @@ public class TinySrg {
 		try(BufferedReader r = Files.newBufferedReader(Paths.get(args[0]))) {
 			mappings = TinyMappingFactory.load(r);
 		}
-		TsrgMappings tsrg = new TsrgMappings(Paths.get(args[1]));
-		TinyTree tinySrg = addSrg(mappings, tsrg);
-		try(OutputStream out = Files.newOutputStream(Paths.get(args[2]), StandardOpenOption.CREATE)) {
+		SrgMappings srg;
+		Path outfile;
+		switch(args[1]) {
+		case "tsrg":
+			srg = SrgMappings.fromTsrg(Paths.get(args[2]));
+			outfile = Paths.get(args[3]);
+			break;
+		case "csrg":
+			srg = SrgMappings.fromCsrg(Paths.get(args[2]), args[4], Paths.get(args[3]));
+			outfile = Paths.get(args[5]);
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown mapping type " + args[1]);
+		}
+		TinyTree tinySrg = addSrg(mappings, srg);
+		try(OutputStream out = Files.newOutputStream(outfile, StandardOpenOption.CREATE)) {
 			TinyV2Writer.write(tinySrg, out);
 		}
 	}
-	
-	public static void checkForDupMappings(TinyTree tree) {
-		
-	}
 
-	public static TinyTree addSrg(TinyTree tiny, TsrgMappings tsrg) {
+	public static TinyTree addSrg(TinyTree tiny, SrgMappings tsrg) {
 		TinyTreeBuilder builder = new TinyTreeBuilder()
 				.major(tiny.getMetadata().getMajorVersion())
 				.minor(tiny.getMetadata().getMinorVersion());
