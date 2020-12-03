@@ -30,25 +30,38 @@ public class TinySrg {
 		}
 		SrgMappings srg;
 		Path outfile;
+		int nsIdx;
 		switch(args[1]) {
 		case "tsrg":
 			srg = SrgMappings.fromTsrg(Paths.get(args[2]));
 			outfile = Paths.get(args[3]);
+			nsIdx = 4;
 			break;
 		case "csrg":
 			srg = SrgMappings.fromCsrg(Paths.get(args[2]), args[4], Paths.get(args[3]));
 			outfile = Paths.get(args[5]);
+			nsIdx = 6;
 			break;
 		default:
 			throw new IllegalArgumentException("Unknown mapping type " + args[1]);
 		}
-		TinyTree tinySrg = addSrg(mappings, srg);
+		TinyTree tinySrg;
+		if(nsIdx >= args.length) {
+			tinySrg = addSrg(mappings, srg);
+		} else {
+			tinySrg = addSrg(mappings, srg, args[nsIdx]);
+		}
+		
 		try(OutputStream out = Files.newOutputStream(outfile, StandardOpenOption.CREATE)) {
 			TinyV2Writer.write(tinySrg, out);
 		}
 	}
-
+	
 	public static TinyTree addSrg(TinyTree tiny, SrgMappings tsrg) {
+		return addSrg(tiny, tsrg, "srg");
+	}
+	
+	public static TinyTree addSrg(TinyTree tiny, SrgMappings tsrg, String targetNamespace) {
 		TinyTreeBuilder builder = new TinyTreeBuilder()
 				.major(tiny.getMetadata().getMajorVersion())
 				.minor(tiny.getMetadata().getMinorVersion());
@@ -57,7 +70,7 @@ public class TinySrg {
 		for(String namespace : namespaces) {
 			builder.namespace(namespace);
 		}
-		builder.namespace("srg");
+		builder.namespace(targetNamespace);
 		for(ClassDef clazz : tiny.getClasses()) {
 			builder.clazz(cb -> {
 				for(String namespace : namespaces) {
@@ -65,7 +78,7 @@ public class TinySrg {
 				}
 				String obfClass = clazz.getName("official");
 				cb.comment(clazz.getComment());
-				cb.name("srg", tsrg.mapClass(obfClass));
+				cb.name(targetNamespace, tsrg.mapClass(obfClass));
 				for(MethodDef method : clazz.getMethods()) {
 					String desc = method.getDescriptor("official");
 					cb.method(desc, mb -> {
@@ -73,7 +86,7 @@ public class TinySrg {
 							mb.name(namespace, method.getRawName(namespace));
 						}
 						mb.comment(method.getComment())
-								.name("srg", tsrg.mapMethod(new Triple<>(obfClass, method.getName("official"), desc)));
+								.name(targetNamespace, tsrg.mapMethod(new Triple<>(obfClass, method.getName("official"), desc)));
 						for(ParameterDef param : method.getParameters()) {
 							mb.parameter(param.getLocalVariableIndex(), pb -> {
 								for(String namespace : namespaces) {
@@ -100,7 +113,7 @@ public class TinySrg {
 							fb.name(namespace, field.getRawName(namespace));
 						}
 						fb.comment(field.getComment())
-								.name("srg", tsrg.mapField(new Pair<>(obfClass, field.getName("official"))));
+								.name(targetNamespace, tsrg.mapField(new Pair<>(obfClass, field.getName("official"))));
 					});
 				}
 			});
